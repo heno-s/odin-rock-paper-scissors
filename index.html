@@ -4,13 +4,15 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
         <title>Rock, Paper, Scissors</title>
     </head>
     <body>
-        <dialog>
-            <div>The final winner of this game is player! Congratulations!</div>
-        </dialog>
         <div class="game">
+            <dialog>
+                <div class="final-result"></div>
+                <button class="replay-button">play again</button>
+            </dialog>
             <div class="player-info">
                 <div>Player</div>
                 <div id="player-score">0</div>
@@ -18,13 +20,13 @@
             <div>
                 <div class="prompt">Choose your weapon!</div>
                 <div class="choices">
-                    <div class="choice"><img src="images/rock.png" alt="rock" /></div>
-                    <div class="choice"><img src="images/paper.png" alt="paper" /></div>
-                    <div class="choice"><img src="images/scissors.png" alt="scissors" /></div>
+                    <div class="choice"><img src="images/rock.png" alt="rock" data-choice="0" /></div>
+                    <div class="choice"><img src="images/paper.png" alt="paper" data-choice="1" /></div>
+                    <div class="choice"><img src="images/scissors.png" alt="scissors" data-choice="2" /></div>
                 </div>
-                <div class="result">You win! Scissors beats paper!</div>
+                <div class="result"></div>
             </div>
-            <div class="computer-score">
+            <div class="computer-info">
                 <div>Computer</div>
                 <div id="computer-score">0</div>
             </div>
