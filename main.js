@@ -16,7 +16,7 @@ function playRound(playerChoice, computerChoice) {
 
     const battle = `${playerChoice} ${computerChoice}`;
     const winScenarios = ["rock scissors", "paper rock", "scissors paper"];
-    let result = { text: "", computerWin: false, playerWin: false };
+    const result = { text: "", computerWin: false, playerWin: false };
 
     if (playerChoice === computerChoice) {
         result.text = "It is a tie!";
@@ -52,17 +52,17 @@ function game() {
         }
     }
 
-    const finalResult = { text: "", computerWin: false, playerWin: false };
+    const result = { text: "", computerWin: false, playerWin: false };
 
     if (score.player === score.computer) {
-        finalResult.text = "The game ended as a tie.";
+        result.text = "The game ended as a tie.";
     } else if (score.player > score.computer) {
-        finalResult.text = "You are the final winner of the game, congratulations!";
-        finalResult.playerWin = true;
+        result.text = "You are the final winner of the game, congratulations!";
+        result.playerWin = true;
     } else {
-        finalResult.text = "The final winner of the game is computer!";
-        finalResult.computerWin = true;
+        result.text = "The final winner of the game is computer!";
+        result.computerWin = true;
     }
 
-    return finalResult;
+    return result;
 }
