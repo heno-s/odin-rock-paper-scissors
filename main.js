@@ -1,4 +1,39 @@
+const choices = [...document.querySelectorAll(".choice")];
+const modal = document.querySelector("dialog");
+const modalBtn = modal.querySelector(".replay-button");
+const promptElement = document.querySelector(".prompt");
+const roundResult = document.querySelector(".result");
+const finalResult = modal.querySelector(".final-result");
+const playerScore = document.querySelector("#player-score");
+const computerScore = document.querySelector("#computer-score");
+
+choices.forEach((choice) => {
+    choice.addEventListener("click", function (evt) {
+        promptElement.style.visibility = "hidden";
+        playRound(this.dataset.choice, computerPlay());
+        roundResult.style.visibility = "visible";
+    });
+});
+
+modal.addEventListener("close", resetGame);
+
+modalBtn.addEventListener("click", (evt) => modal.close());
+
 const options = ["rock", "paper", "scissors"]; // if new options are added, expand also winScenarios variable
+let score = {
+    player: 0,
+    computer: 0,
+};
+score = new Proxy(score, {
+    set(target, property, value) {
+        target[property] = value;
+        if (property === "player") {
+            playerScore.textContent = value;
+        } else {
+            computerScore.textContent = value;
+        }
+    },
+});
 
 function computerPlay() {
     const indexOfChoice = Math.floor(Math.random() * options.length);
@@ -16,53 +51,35 @@ function playRound(playerChoice, computerChoice) {
 
     const battle = `${playerChoice} ${computerChoice}`;
     const winScenarios = ["rock scissors", "paper rock", "scissors paper"];
-    const result = { text: "", computerWin: false, playerWin: false };
 
     if (playerChoice === computerChoice) {
-        result.text = "It is a tie!";
+        roundResult.textContent = "It is a tie!";
     } else if (winScenarios.includes(battle)) {
-        result.text = `You win! ${playerChoice} beats ${computerChoice}`;
-        result.playerWin = true;
+        roundResult.textContent = `You win! ${playerChoice} beat${playerChoice === "scissors" ? "" : "s"} ${computerChoice}`;
+        score.player++;
     } else {
-        result.text = `You lose! ${playerChoice} cannot beat ${computerChoice}`;
-        result.computerWin = true;
+        roundResult.textContent = `You lose! ${playerChoice} cannot beat ${computerChoice}`;
+        score.computer++;
     }
 
-    return result;
+    if (score.player === 5 || score.computer === 5) {
+        showFinalAnnouncement(score.player === 5 ? "player" : "computer");
+    }
 }
 
-function game() {
-    const score = {
-        player: 0,
-        computer: 0,
-    };
-
-    let latestChoice = "rock";
-
-    for (let i = 0; i < 5; i++) {
-        const playerChoice = (latestChoice = prompt("rock, paper, scissors", latestChoice).trim());
-
-        const roundResult = playRound(playerChoice, computerPlay());
-        console.log(roundResult.text);
-
-        if (roundResult.playerWin) {
-            score.player++;
-        } else if (roundResult.computerWin) {
-            score.computer++;
-        }
-    }
-
-    const result = { text: "", computerWin: false, playerWin: false };
-
-    if (score.player === score.computer) {
-        result.text = "The game ended as a tie.";
-    } else if (score.player > score.computer) {
-        result.text = "You are the final winner of the game, congratulations!";
-        result.playerWin = true;
+function showFinalAnnouncement(winner) {
+    if (winner === "player") {
+        finalResult.textContent = "You are the final winner of the game! Congratulations";
     } else {
-        result.text = "The final winner of the game is computer!";
-        result.computerWin = true;
+        finalResult.textContent = "The final winner of the game is computer. Maybe next time.";
     }
+    modal.showModal();
+}
 
-    return result;
+function resetGame() {
+    finalResult.textContent = "";
+    promptElement.style.visibility = "visible";
+    roundResult.style.visibility = "hidden";
+    score.player = 0;
+    score.computer = 0;
 }
